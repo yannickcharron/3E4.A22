@@ -1,0 +1,24 @@
+{
+  "name": "3e4-a22",
+  "version": "1.0.0",
+  "description": "Contenu du 3E4 - Session Automne 2022",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yannickcharron/3E4.A22.git"
+  },
+  "author": "Yannick Charron",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yannickcharron/3E4.A22/issues"
+  },
+  "homepage": "https://github.com/yannickcharron/3E4.A22#readme",
+  "dependencies": {
+    "chalk": "^5.0.1",
+    "express": "^4.18.1"
+  }
+}
