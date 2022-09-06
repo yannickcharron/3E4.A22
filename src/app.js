@@ -1,6 +1,8 @@
 import dayjs from 'dayjs';
 import express from 'express';
 
+import planetsRoutes from './routes/planets-routes.js';
+
 const app = express();
 
 //TODO: Ajouter du code ici
@@ -49,5 +51,8 @@ app.get('/maths/:operation', (req, res) => {
     res.set('Content-Type', 'text/plain');
     res.send(result.toString());
 })
+
+app.use('/planets', planetsRoutes);
+
 
 export default app;
