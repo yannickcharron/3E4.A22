@@ -5,6 +5,7 @@ import errors from './middlewares/errors.js';
 import planetsRoutes from './routes/planets-routes.js';
 
 const app = express();
+app.use(express.json()); //Permettre à notre serveur de comprendre le json reçu
 
 //TODO: Ajouter du code ici
 

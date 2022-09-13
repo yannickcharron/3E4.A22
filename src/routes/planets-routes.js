@@ -11,20 +11,19 @@ class PlanetsRoutes {
     router.get('/', this.getAll); // /planets
     router.get('/:idPlanet', this.getOne); // /planets/:idPlanet
     router.post('/', this.post); // /planets
-    router.delete('/:idPlanet', this.deleteOne)
+    router.delete('/:idPlanet', this.deleteOne);
   }
 
   deleteOne(req, res, next) {
     const idPlanet = parseInt(req.params.idPlanet, 10);
 
-    const index = PLANETS.findIndex(p => p.id === idPlanet);
-    if(index === -1) {
-        return next(HttpError.NotFound(`La planète avec l'identifiant ${idPlanet} n'existe pas`));
+    const index = PLANETS.findIndex((p) => p.id === idPlanet);
+    if (index === -1) {
+      return next(HttpError.NotFound(`La planète avec l'identifiant ${idPlanet} n'existe pas`));
     } else {
-        PLANETS.splice(index, 1);
-        res.status(204).end();
+      PLANETS.splice(index, 1);
+      res.status(204).end();
     }
-    
   }
 
   getAll(req, res, next) {
@@ -55,7 +54,21 @@ class PlanetsRoutes {
     }
   }
 
-  post(req, res, next) {}
+  post(req, res, next) {
+    const newPlanet = req.body;
+
+    if (newPlanet) {
+      const index = PLANETS.findIndex((p) => p.id === req.body.id);
+      if (index === -1) {
+        PLANETS.push(newPlanet);
+        res.status(201).json(newPlanet);
+      } else {
+        return next(HttpError.Conflict(`Une planète avec l'identifiant ${newPlanet.id}`));
+      }
+    } else {
+      return next(HttpError.BadRequest('Aucune information transmise'));
+    }
+  }
 }
 
 new PlanetsRoutes();
