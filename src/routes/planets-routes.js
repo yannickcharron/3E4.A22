@@ -3,6 +3,8 @@ import HttpError from 'http-errors';
 
 import PLANETS from '../data/planets.js';
 
+import planetsRepository from '../repositories/planets-repository.js';
+
 const router = express.Router();
 
 class PlanetsRoutes {
@@ -26,9 +28,14 @@ class PlanetsRoutes {
     }
   }
 
-  getAll(req, res, next) {
-    res.status(200);
-    res.json(PLANETS);
+  async getAll(req, res, next) {
+    try {
+      const planets = await planetsRepository.retrieveAll();
+      console.log(planets);
+      res.status(200).json(planets);
+    } catch(err) {
+      return next(err);
+    }
   }
 
   // /planets/400
