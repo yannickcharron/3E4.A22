@@ -15,7 +15,8 @@ const planetSchema = mongoose.Schema({
 {
     collection:'planets',
     strict:'throw',
-    timestamps:true
+    timestamps:true,
+    //versionKey: false
 });
 
 export default mongoose.model('Planet', planetSchema);
