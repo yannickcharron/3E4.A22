@@ -11,7 +11,7 @@ export default (err, req, res, next) => {
     if (httpErrors.isHttpError(err)) {
         error.status = err.status;
     } else {
-        if (err.name === 'MongoError') {
+        if (err.name === 'MongoServerError') {
             switch (err.code) {
                 case 11000:
                     error.status = 409;

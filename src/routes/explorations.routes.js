@@ -1,6 +1,8 @@
 import express from 'express';
 import HttpError from 'http-errors';
 
+import explorationRepository from '../repositories/explorations.repository.js';
+
 const router = express.Router(); 
 
 class ExplorationsRoutes {

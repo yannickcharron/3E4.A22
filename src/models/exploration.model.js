@@ -3,6 +3,11 @@ import mongoose from 'mongoose';
 const explorationSchema = mongoose.Schema({
 
     explorationDate: { type: Date, default: Date.now, required:true },
+    planet:{
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'Planet'
+    },
     coord: {
         lon: Number,
         lat: Number
@@ -11,7 +16,7 @@ const explorationSchema = mongoose.Schema({
         element: String,
         percent: Number,
     }],
-    commment: String
+    comment: String
 }, {
     collection: 'explorations'
 });

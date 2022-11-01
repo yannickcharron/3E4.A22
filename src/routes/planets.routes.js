@@ -119,12 +119,21 @@ class PlanetsRoutes {
             }
         }
 
+        //Est-ce que nous devons inclure les explorations?
+        const retrieveOptions = {};        
+        if(req.query.embed) {
+            if(req.query.embed === 'explorations') {
+                retrieveOptions.explorations = true;
+            }
+        }
+
+
         try {
-            let planet = await planetRepository.retrieveById(idPlanet);
+            let planet = await planetRepository.retrieveById(idPlanet, retrieveOptions);
 
             if (planet) {
                 //1. J'ai une planète
-                planet = planet.toObject({getters:false, virtuals:false});
+                planet = planet.toObject({getters:false, virtuals:true});
                 planet = planetRepository.transform(planet, transformOptions);
                 res.status(200).json(planet);
             } else {

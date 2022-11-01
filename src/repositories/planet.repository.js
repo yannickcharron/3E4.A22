@@ -5,8 +5,14 @@ import dayjs from 'dayjs';
 const ZERO_KELVIN = -273.15;
 class PlanetRepository {
     
-    retrieveById(idPlanet) {
-        return Planet.findById(idPlanet);
+    retrieveById(idPlanet, retrieveOptions) {
+        const retrieveQuery = Planet.findById(idPlanet);
+
+        if(retrieveOptions.explorations) {
+            retrieveQuery.populate('explorations');
+        }
+
+        return retrieveQuery;
     }
 
     retrieveAll(filter) {
