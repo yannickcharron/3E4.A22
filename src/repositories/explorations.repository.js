@@ -11,12 +11,15 @@ class ExplorationsRepository {
                                 .limit(retrieveOptions.limit)
                                 .skip(retrieveOptions.skip);
 
-        return [retrieveQuery, Exploration.countDocuments() ];
+        return Promise.all([ retrieveQuery, Exploration.countDocuments() ]);
     }
 
-    transform(e) {
-        //TODO: Reviens ici le grand
-        return e;
+    transform(exploration) {
+        
+
+        exploration.href = `${process.env.BASE_URL}/explorations/${exploration._id}`;
+        delete exploration._id;
+        return exploration;
     }
 
 

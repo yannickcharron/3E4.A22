@@ -21,7 +21,8 @@ class ExplorationsRoutes {
                 skip: req.skip
             }
 
-            let explorations = await explorationRepository.retrieve(retrieveOptions);
+
+            let [ explorations, itemCount ] = await explorationRepository.retrieve(retrieveOptions);
 
             explorations = explorations.map(e => {
                 e = e.toObject({getters: false, virtuals:false});
@@ -30,22 +31,44 @@ class ExplorationsRoutes {
                 return e;
             });
 
+            const pageCount = Math.ceil(itemCount / req.query.limit)
+            const hasNextPageFunction = paginate.hasNextPages(req);
+            const hasNextPage = hasNextPageFunction(pageCount);
+
+            const pagesLinksFunction = paginate.getArrayPages(req);
+            const links = pagesLinksFunction(3, pageCount, req.query.page);
+            console.log(links); 
+
             const payload = {
                 _metadata: {
-                    hasNextPage: true,
+                    hasNextPage:hasNextPage, 
                     page: req.query.page,
                     limit: req.query.limit,
                     skip: req.skip,
-                    totalPages: 0,
-                    totalDocuments: 0
+                    totalPages: pageCount,
+                    totalDocuments: itemCount
                 },
                 _links: {
-                    prev:'',
-                    self:'',
-                    next:''
+                    prev:`${process.env.BASE_URL}${links[0].url}`,
+                    self:`${process.env.BASE_URL}${links[1].url}`,
+                    next:`${process.env.BASE_URL}${links[2].url}`
 
                 },
                 data: explorations
+            }
+
+            //Cas particulier de la première page
+            if(req.query.page === 1) {
+                payload._links.self = `${process.env.BASE_URL}${links[0].url}`;
+                payload._links.next = `${process.env.BASE_URL}${links[1].url}`;
+                delete payload._links.prev;
+            }
+
+            //Cas particulier de la dernière page
+            if(!hasNextPage) {
+                payload._links.prev = `${process.env.BASE_URL}${links[1].url}`;
+                payload._links.self = `${process.env.BASE_URL}${links[2].url}`;
+                delete payload._links.next;
             }
 
             res.status(200).json(payload);
