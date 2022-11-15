@@ -77,8 +77,31 @@ class ExplorationsRoutes {
         }
     }
 
-    getOne(req, res, next) {
+    async getOne(req, res, next) {
 
+        try {
+
+            const retrieveOptions = {};
+            if(req.query.embed && req.query.embed === 'planet') {
+                retrieveOptions.planet = true;
+            }
+
+            const idExploration = req.params.explorationId;
+            let exploration = await explorationRepository.retrieveById(idExploration, retrieveOptions);
+
+            if(!exploration) {
+                return next(HttpError.NotFound());
+            }
+
+            exploration = exploration.toObject({getters:false, virtuals:false});
+            exploration = explorationRepository.transform(exploration, retrieveOptions);
+            
+            res.status(200).json(exploration);
+
+
+        } catch(err) {
+            return next(err);
+        }
     }
 
 }

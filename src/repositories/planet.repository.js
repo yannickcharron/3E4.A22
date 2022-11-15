@@ -47,8 +47,10 @@ class PlanetRepository {
         planet.lightspeed = 
             `${planet.position.x.toString(16)}@${planet.position.y.toString(16)}#${planet.position.z.toString(16)}`;
 
-        delete planet.__v;
+        planet.href = `${process.env.BASE_URL}/planets/${planet._id}`;    
 
+        delete planet._id;
+        delete planet.__v;
 
         return planet;
     }
